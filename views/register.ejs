@@ -17,28 +17,28 @@
       <h1>Create account</h1>
       <div class="container">
         <div class="sign-up-content">
-          <form method="POST" class="signup-form">
+          <form method="POST" class="signup-form" action="/user/register">
             <h2 class="form-title">What type of user are you ?</h2>
             <div class="form-radio">
-              <input type="radio" name="member_level" value="employee" id="employee" checked="checked" />
+              <input type="radio" name="role" value="employee" id="employee" checked="checked" />
               <label for="employee">Employee</label>
-              <input type="radio" name="member_level" value="manager" id="manager" />
+              <input type="radio" name="role" value="manager" id="manager" />
               <label for="manager">Manager</label>
             </div>
 
             <div class="form-textbox">
               <label for="name">Full name</label>
-              <input type="text" name="fullName" id="fullName" placeholder="Your name" />
+              <input type="text" name="fullName" id="fullName" placeholder="Your name" required />
             </div>
 
             <div class="form-textbox">
               <label for="username">Email</label>
-              <input type="email" name="username" id="username" placeholder="Your email id" />
+              <input type="email" name="username" id="username" placeholder="Your email id" required />
             </div>
 
             <div class="form-textbox">
               <label for="password">Password</label>
-              <input type="password" name="password" id="password" />
+              <input type="password" name="password" id="password" required />
             </div>
             <div>
               <div class="form-group js-input-file">
@@ -47,6 +47,9 @@
                 <span class="input-file__info">No image chosen</span>
               </div>
             </div>
+            <% if(flashMessages) { %>
+            <label style="color: red; font-size:12px;"><%= flashMessages.error %> </label>
+            <% } %>
             <div class="form-textbox">
               <input type="submit" name="submit" id="submit" class="submit" value="Create account" />
             </div>

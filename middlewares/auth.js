@@ -8,8 +8,7 @@ const ensureAuthUser = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.toastr.error('Please login to view this resource');
-    res.redirect('/auth/login');
+    return res.redirect('/user/login');
   }
 };
 

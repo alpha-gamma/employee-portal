@@ -2,18 +2,10 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
-
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-  User.find();
-});
+const auth = require('../middlewares/auth');
 
 router.get('/login', function (req, res, next) {
   res.render('login');
-});
-
-router.get('/register', function (req, res, next) {
-  res.render('register');
 });
 
 router.get('/logout', function (req, res, next) {
@@ -21,16 +13,39 @@ router.get('/logout', function (req, res, next) {
   res.redirect('/');
 });
 
-/**Register new user */
+router.get('/register', function (req, res, next) {
+  res.render('register');
+});
+
+router.get('/profile', auth.ensureAuthUser, function (req, res, next) {
+  if (req.user) {
+    res.render('profile');
+  } else {
+    res.redirect('/user/login');
+  }
+});
+
 router.post('/register', async function (req, res, next) {
   const user = new User(req.body);
+  const userInDb = await User.findOne({ username: user.username }).exec();
+  if (userInDb) {
+    console.error('User with email already exists. Please enter different email.');
+    req.flash('error', 'User with email already exists.');
+    res.redirect('/user/register');
+    return;
+  }
   await user.hashPassword();
   user.save((err, savedUser) => {
     if (err) {
       console.error(`Error while creating a user: ${err}`);
       return;
     }
-    res.json(savedUser);
+    req.login(savedUser, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect('/');
+    });
   });
 });
 
@@ -42,13 +57,6 @@ router.post(
   }),
   function (req, res, next) {
     res.redirect('/');
-    // req.login(req.user, (err) => {
-    //   if(err){
-    //     return res.redirect('login');
-    //   }
-    // return res.redirect('/');
-    // })
-    //res.json(req.user.toAuthJson());
   }
 );
 

@@ -5,15 +5,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const flash = require('connect-flash');
-const toastr = require('express-toastr');
 
 require('./config/passport');
 
 const auth = require('./middlewares/auth');
 
 const indexRouter = require('./routes/index');
-const authRouter = require('./routes/auth');
-const jobRouter = require('./routes/job');
+const userRouter = require('./routes/user');
+const projectOpeningRouter = require('./routes/projectOpening');
 
 const db = require('./database/db');
 
@@ -32,13 +31,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('express-session')({ secret: process.env.JWT_SECRET, resave: false, saveUninitialized: false }));
 app.use(flash());
-app.use(toastr());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(function (req, res, next) {
+  res.locals.flashMessages = req.flash();
+  next();
+});
+
 app.use('/', indexRouter);
-app.use('/auth', authRouter);
-app.use('/job', auth.ensureAuthUser, jobRouter);
+app.use('/user', userRouter);
+app.use('/projectOpening', auth.ensureAuthUser, projectOpeningRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
