@@ -11269,6 +11269,8 @@ textarea.form-control {
   height: 100%;
   width: 100%;
   border-radius: 50%;
+  display: inline-block;
+  object-fit: cover;
 }
 
 #welcome-msg {

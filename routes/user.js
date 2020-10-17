@@ -48,7 +48,6 @@ router.post('/register', upload.single('image'), async function (req, res, next)
   }
   const userInDb = await User.findOne({ username: user.username }).exec();
   if (userInDb) {
-    console.error('User with email already exists. Please enter different email.');
     req.flash('error', 'User with email already exists.');
     res.redirect('/user/register');
     return;
@@ -73,6 +72,7 @@ router.post(
   '/login',
   passport.authenticate('local', {
     failureRedirect: 'login',
+    failureFlash: true,
   }),
   function (req, res, next) {
     res.redirect('/');

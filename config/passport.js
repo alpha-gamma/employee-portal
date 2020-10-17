@@ -10,7 +10,7 @@ passport.use(
         return done(err);
       }
       if (!user || !(await user.validatePassword(password))) {
-        return done(null, false);
+        return done(null, false, {message: 'Invalid username or password.'});
       }
       return done(null, user);
     });
