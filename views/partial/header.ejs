@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
   <div class="container">
-    <a class="navbar-brand" href="index.html">JobPortal</a>
+    <a class="navbar-brand" href="/">JobPortal</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -15,9 +15,22 @@
 
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
-        <li class="nav-item"><a href="/user/profile" class="nav-link">Profile</a></li>
-        <li class="nav-item cta mr-md-2"><a href="/projectOpening/new" class="nav-link">Post a Job</a></li>
+        <% if (loggedInUser && loggedInUser.role == 'manager') { %>
+        <li class="nav-item"><a href="/projectOpening/new" class="nav-link">New Opening</a></li>
+        <% } %>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <div id="welcome-msg">Welcome, <%= loggedInUser.fullName %></div>
+        <% if (loggedInUser.imagePath && loggedInUser.imagePath != '') { %>
+        <div id="profile-image">
+          <img src="images/profile/<%= loggedInUser.imagePath %>" />
+        </div>
+        <% } else { %>
+        <div id="profile-image-text"><%= loggedInUser.fullName.split(' ').map(name => name[0]).join('').toUpperCase() %></div>
+        <% } %>
+        <div id="logout">
+          <a href="/user/logout" title="Logout"><i class="icon-power-off"></i></a>
+        </div>
       </ul>
     </div>
   </div>

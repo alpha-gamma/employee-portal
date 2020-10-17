@@ -12,7 +12,18 @@ const ensureAuthUser = (req, res, next) => {
   }
 };
 
+const ensureManager = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    if (req.user.role == 'manager') {
+      next();
+      return;
+    }
+  }
+  return res.redirect('/');
+};
+
 module.exports = {
   isAuthenticated,
   ensureAuthUser,
+  ensureManager,
 };

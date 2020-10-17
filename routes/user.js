@@ -3,6 +3,22 @@ const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
 const auth = require('../middlewares/auth');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/images/profile')
+  },
+  filename: (req, file, cb) => {
+    const uniqueFileId = uuidv4();
+    cb(null, uniqueFileId + path.extname(file.originalname))
+  }
+});
+
+const upload = multer({ storage: storage });
+
 
 router.get('/login', function (req, res, next) {
   res.render('login');
@@ -25,8 +41,11 @@ router.get('/profile', auth.ensureAuthUser, function (req, res, next) {
   }
 });
 
-router.post('/register', async function (req, res, next) {
+router.post('/register', upload.single('image'), async function (req, res, next) {
   const user = new User(req.body);
+  if (req.file && req.file.filename) {
+    user.imagePath = req.file.filename;
+  }
   const userInDb = await User.findOne({ username: user.username }).exec();
   if (userInDb) {
     console.error('User with email already exists. Please enter different email.');
@@ -49,7 +68,7 @@ router.post('/register', async function (req, res, next) {
   });
 });
 
-/**Login */
+
 router.post(
   '/login',
   passport.authenticate('local', {

@@ -26,39 +26,75 @@
     <link rel="stylesheet" href="css/style-job-portal.css" />
   </head>
   <body>
-    
-    <%- include('partial/header.ejs') %> 
+    <%- include('partial/header.ejs') %>
 
     <section class="ftco-section bg-light">
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section text-center ftco-animate">
-            <h2 class="mb-4"><span>Current</span> Project Openings</h2>
+            <% if (loggedInUser.role == 'manager') { %>
+            <h2 class="mb-4"><span>My</span> Project Openings</h2>
+            <% } else { %>
+            <h2 class="mb-4"><span>All available</span> Project Openings</h2>
+            <% } %>
           </div>
         </div>
+        <% if (!projectOpenings || projectOpenings.length == 0) { %> <% if (loggedInUser.role == 'manager') { %>
+        <h6>You have not created any position yet. <a href="/projectOpening/new">Click here</a> to create a new one.</h6>
+        <% } else { %>
+        <h6>There are no open positions available right now.</h6>
+        <% } %> <% } else { %> <% for( let index = 0; index < projectOpenings.length; index++ ) { %>
         <div class="row">
           <div class="col-md-12 ftco-animate">
             <div class="job-post-item bg-white p-4 d-block d-md-flex align-items-center">
               <div class="mb-4 mb-md-0 mr-5">
                 <div class="job-post-item-header d-flex align-items-center">
-                  <h2 class="mr-3 text-black h3">Role</h2>
+                  <h2 class="mr-3 text-black h3">
+                    <a href="/projectOpening/<%= projectOpenings[index]._id %> "><%=projectOpenings[index].role%></a>
+                  </h2>
+                  <div class="badge-wrap">
+                    <% if (projectOpenings[index].status == 'open') { %>
+                    <span class="bg-info text-white badge py-2 px-3">Open</span>
+                    <% } %> <% if (projectOpenings[index].status == 'close') { %>
+                    <span class="bg-danger text-white badge py-2 px-3">Closed</span>
+                    <% } %>
+                  </div>
                 </div>
                 <div class="job-post-item-body d-block d-md-flex">
-                  <div class="mr-3"><span class="icon-layers"></span> <a href="#">Project Name</a></div>
-                  <div><span class="icon-my_location"></span> <span>Client Name</span></div>
+                  <div class="mr-3"><span class="icon-layers"></span> <a><%=projectOpenings[index].projectName%></a></div>
+                  <div><span class="icon-my_location"></span> <span><%=projectOpenings[index].clientName%></span></div>
                 </div>
               </div>
               <div class="ml-auto d-flex">
-                <a href="job-single.html" class="btn btn-primary py-2 mr-1">Apply Job</a>
-                </a>
+                <% if (loggedInUser.role == 'manager') { %>
+                <a href="/projectOpening/<%= projectOpenings[index]._id %>/edit " class="btn btn-primary py-2 mr-1"
+                  >Update</a
+                >
+                <% if (projectOpenings[index].status == 'open') { %>
+                <form action="/projectOpening/<%= projectOpenings[index]._id %>/close" method="POST">
+                  <button type="submit" class="btn btn-danger py-2 mr-1">Close</button>
+                </form>
+                <% } %> <% if (projectOpenings[index].status == 'close') { %>
+                <form action="/projectOpening/<%= projectOpenings[index]._id %>/open" method="POST">
+                  <button type="submit" class="btn btn-info py-2 mr-1">Open</button>
+                </form>
+                <% } %> <% } else { %> <% if (appliedOpenings && appliedOpenings.filter(x => x.projectOpeningId ==
+                projectOpenings[index]._id).length) { %>
+                <button class="btn btn-outline-info py-2 mr-1">Already applied</button>
+                <% } else{ %>
+                <form action="/projectOpening/<%= projectOpenings[index]._id %>/apply" method="POST">
+                  <button type="submit" class="btn btn-primary py-2 mr-1">Apply now</button>
+                </form>
+                <% } %> <% } %>
               </div>
             </div>
           </div>
         </div>
+        <% } %> <% } %>
       </div>
     </section>
 
-    <%- include('partial/footer.ejs') %> 
+    <%- include('partial/footer.ejs') %>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-migrate-3.0.1.min.js"></script>

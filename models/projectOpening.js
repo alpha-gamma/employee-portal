@@ -28,6 +28,11 @@ const ProjectOpeningSchema = new Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ['open', 'close'],
+      default: 'open'
+    }
   },
   {
     timestamps: true,

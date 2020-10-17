@@ -36,6 +36,7 @@ app.use(passport.session());
 
 app.use(function (req, res, next) {
   res.locals.flashMessages = req.flash();
+  res.locals.loggedInUser = req.user;
   next();
 });
 

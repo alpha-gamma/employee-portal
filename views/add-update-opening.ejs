@@ -32,50 +32,90 @@
       <div class="container">
         <div class="row justify-content-center mb-5 pb-3">
           <div class="col-md-7 heading-section text-center ftco-animate">
+            <% if (projectOpening._id) { %>
+            <h2 class="mb-4"><span>Update</span> Project Opening</h2>
+            <% } else { %>
             <h2 class="mb-4"><span>Create</span> New Project Opening</h2>
+            <% } %>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12 col-lg-12 mb-5">
-            <form action="#" class="p-5 bg-white">
+            <form method="POST" action="/projectOpening" class="p-5 bg-white">
+              <% if (projectOpening._id) { %>
+              <input type="hidden" name="_id" value="<%- projectOpening._id%>" />
+              <% } %>
+              <input type="hidden" name="createdBy" value="<%- loggedInUser._id%>" />
               <div class="row form-group mb-4">
                 <div class="col-md-12"><h3>Job Role</h3></div>
                 <div class="col-md-12 mb-3 mb-md-0">
-                  <input type="text" class="form-control" placeholder="Developer, Lead, Manager" required />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Developer, Lead, Manager"
+                    name="role"
+                    value="<%- projectOpening.role%>"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="row form-group mb-4">
                 <div class="col-md-12"><h3>Project</h3></div>
                 <div class="col-md-12 mb-3 mb-md-0">
-                  <input type="text" class="form-control" placeholder="Smartdeck, Pulse" required />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Smartdeck, Pulse"
+                    name="projectName"
+                    value="<%- projectOpening.projectName%>"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="row form-group mb-4">
                 <div class="col-md-12"><h3>Client</h3></div>
                 <div class="col-md-12 mb-3 mb-md-0">
-                  <input type="text" class="form-control" placeholder="Audi, Lutron, GE" required />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Audi, Lutron, GE"
+                    name="clientName"
+                    value="<%- projectOpening.clientName%>"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="row form-group mb-4">
                 <div class="col-md-12"><h3>Technology</h3></div>
                 <div class="col-md-12 mb-3 mb-md-0">
-                  <input type="text" class="form-control" placeholder="MEAN stack" required />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="MEAN stack"
+                    name="technologies"
+                    value="<%- projectOpening.technologies%>"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="row form-group">
                 <div class="col-md-12"><h3>Description</h3></div>
                 <div class="col-md-12 mb-3 mb-md-0">
-                  <textarea name="" class="form-control" id="" cols="30" rows="3" required></textarea>
+                  <textarea class="form-control" id="" cols="30" rows="3" name="description" required>
+<%- projectOpening.description%>
+</textarea
+                  >
                 </div>
               </div>
 
               <div class="row form-group">
                 <div class="col-md-12">
-                  <input type="submit" value="Post" class="btn btn-primary py-2 px-5" />
+                  <input type="submit" value="Submit" class="btn btn-primary py-2 px-5 mr-2 float-right" />
+                  <a href="/projectOpening" class="btn btn-danger py-2 px-5 mr-2 float-right">Cancel</a>
                 </div>
               </div>
             </form>
