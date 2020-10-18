@@ -17,17 +17,23 @@ npm install
 3. Copy `.env.example` as `.env`
 
 4. Add the following settings in `.env` file:
-    1. Jwt configurations
+
+    4.1. Jwt configuration
     ```
     JWT_SECRET
     ```
 
-    2. Database configurations
+    4.2. Database configuration
     ```
     DB_URL
     ```
 
-    3. Hashing configurations
+    4.3. Hashing configuration
     ```
     SALT_ROUNDS
     ```
+    
+### Run
+```
+npm start
+```
