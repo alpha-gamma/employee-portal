@@ -37,3 +37,24 @@ npm install
 ```
 npm start
 ```
+
+### Screenshots
+
+#### Login
+![image](https://user-images.githubusercontent.com/1653101/96375329-14671a80-1196-11eb-9dba-90ea7085c1e6.png)
+
+#### Create Account
+![image](https://user-images.githubusercontent.com/1653101/96375356-3b255100-1196-11eb-9848-a47f5b1cbd07.png)
+
+#### Manager home page
+![image](https://user-images.githubusercontent.com/1653101/96375418-8b9cae80-1196-11eb-84c1-c7d7daf2a6c9.png)
+
+#### Employee home page
+![image](https://user-images.githubusercontent.com/1653101/96375456-ba1a8980-1196-11eb-94f7-312eea14e13b.png)
+
+#### Opening details
+![image](https://user-images.githubusercontent.com/1653101/96375491-e8986480-1196-11eb-94c3-fb408d260ef9.png)
+
+#### Create project opening
+![image](https://user-images.githubusercontent.com/1653101/96375504-01a11580-1197-11eb-9d9a-f3ccb69fed6f.png)
+
